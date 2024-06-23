@@ -26,6 +26,7 @@ namespace ContactsManager.Core.DTO
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
+        [Compare("Password",ErrorMessage ="Password and confirm password do not match")]
         [Required(ErrorMessage = "ConfirmPassword can't be blank")]
         public string ConfirmPassword { get; set; }   
     }

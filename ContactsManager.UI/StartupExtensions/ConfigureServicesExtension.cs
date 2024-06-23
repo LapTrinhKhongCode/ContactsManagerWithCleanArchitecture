@@ -39,8 +39,17 @@ namespace ContactsManager.UI.StartupExtensions
 			});
 			//Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=PersonsDatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False
 
+
 			//thêm identity
-			services.AddIdentity<ApplicationUser,ApplicationRole>()
+			services.AddIdentity<ApplicationUser,ApplicationRole>(options =>
+			{
+				options.Password.RequiredLength = 5;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireLowercase = true;
+				options.Password.RequireDigit = false;
+				options.Password.RequiredUniqueChars = 3; //Eg: AB12AB
+			})
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders()
 				.AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext,Guid>>()

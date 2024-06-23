@@ -6,8 +6,9 @@ using Serilog;
 using CRUDExample.Filters.ActionsFilter;
 using RepositoryContracts;
 using Repositories;
+using ContactsManager.UI.StartupExtensions;
 
-var services = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 //builder.Host.ConfigureLogging(loggingProvider =>
 //{
@@ -17,12 +18,14 @@ var services = WebApplication.CreateBuilder(args);
 //	loggingProvider.AddEventLog();
 //});
 
-services.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
+builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
 {
 	loggerConfiguration.ReadFrom.Configuration(context.Configuration).ReadFrom.Services(services);
 });
 
-var app = services.Build();
+builder.Services.ConfigureServices(builder.Configuration);
+
+var app = builder.Build();
 
 //app.Logger.LogDebug("LogDebug");
 //app.Logger.LogInformation("LogInformation");
@@ -30,13 +33,16 @@ var app = services.Build();
 //app.Logger.LogError("LogError");
 //app.Logger.LogCritical("LogCritical");
 
-if (services.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
   app.UseDeveloperExceptionPage();
 }
 Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot",wkhtmltopdfRelativePath: "Rotativa");	
+
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
+
 app.MapControllers();
 
 app.Run();
