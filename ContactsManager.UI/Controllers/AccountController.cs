@@ -92,6 +92,6 @@ namespace ContactsManager.UI.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(PersonsController.Index), "Persons");
-        }
+        }   
     }
 }

@@ -7,6 +7,7 @@ using CRUDExample.Filters.ActionsFilter;
 using RepositoryContracts;
 using Repositories;
 using ContactsManager.UI.StartupExtensions;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,5 +45,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+	endpoints.MapControllerRoute(
+		name: "areas",
+		pattern: "{area:exists}/{controller=Home}/{action=Index}");	
+});
 
 app.Run();
