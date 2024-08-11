@@ -185,5 +185,13 @@ namespace CRUDExample.Controllers
 				PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
 			};
 		}
+
+
+		[Route("PersonsExcel")]
+		public async Task<IActionResult> PersonsExcel()
+		{
+			MemoryStream memoryStream = await _personsService.GetPersonsExcel();
+			return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "persons.xlsx");
+		}
 	}
 }
